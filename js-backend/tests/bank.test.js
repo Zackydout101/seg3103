@@ -47,6 +47,19 @@ describe("withdraw", () => {
   });
 });
 
+describe("canAfford", () => {
+  test.each([
+    [50, true],
+    [100, true],
+    [150, false],
+    [0, false],
+    [-10, false],
+  ])("amount %p -> %p", (amount, expected) => {
+    const acc = new Account("Alice", 100);
+    expect(acc.canAfford(amount)).toBe(expected);
+  });
+});
+
 describe("transfer", () => {
   test("moves funds between accounts", () => {
     const a = new Account("Alice", 100);

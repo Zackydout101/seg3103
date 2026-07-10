@@ -45,6 +45,10 @@ class Account {
     return this.balance;
   }
 
+  canAfford(amount) {
+    return amount > 0 && amount <= this.balance;
+  }
+
   transfer(other, amount) {
     if (!(other instanceof Account)) {
       throw new TypeError("can only transfer to another Account");

@@ -42,6 +42,10 @@ class Account:
         self.history.append(f"withdraw {amount:.2f}")
         return self.balance
 
+    def can_afford(self, amount: float) -> bool:
+        """Return True if ``amount`` could be withdrawn from the current balance."""
+        return 0 < amount <= self.balance
+
     def transfer(self, other: "Account", amount: float) -> None:
         if not isinstance(other, Account):
             raise TypeError("can only transfer to another Account")

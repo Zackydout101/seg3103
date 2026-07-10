@@ -53,6 +53,15 @@ def test_withdraw_must_be_positive():
         acc.withdraw(-1)
 
 
+@pytest.mark.parametrize(
+    "amount,expected",
+    [(50, True), (100, True), (150, False), (0, False), (-10, False)],
+)
+def test_can_afford(amount, expected):
+    acc = Account("Alice", 100)
+    assert acc.can_afford(amount) is expected
+
+
 def test_transfer_between_accounts():
     a = Account("Alice", 100)
     b = Account("Bob", 0)

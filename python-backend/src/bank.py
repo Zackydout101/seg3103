@@ -32,8 +32,6 @@ class Account:
         return self.balance
 
     def withdraw(self, amount: float) -> float:
-        if amount <= 0:
-            raise ValueError("withdrawal amount must be positive")
         if amount > self.balance:
             raise InsufficientFundsError(
                 f"cannot withdraw {amount:.2f}; balance is {self.balance:.2f}"

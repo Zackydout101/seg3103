@@ -1,8 +1,9 @@
 pipeline {
-    agent any
+    agent none
 
     stages {
         stage('Checkout') {
+            agent any
             steps {
                 checkout scm
             }
@@ -11,14 +12,16 @@ pipeline {
         stage('Automated Tests') {
             parallel {
                 stage('Python Tests') {
+                    agent { docker { image 'python:3.12' } }
                     steps {
-                        sh './scripts/test-python.sh'
+                        sh 'cd python-backend && pip install -r requirements.txt && pytest'
                     }
                 }
 
                 stage('JavaScript Tests') {
+                    agent { docker { image 'node:20' } }
                     steps {
-                        sh './scripts/test-javascript.sh'
+                        sh 'cd js-backend && npm ci --ignore-scripts && npm test'
                     }
                 }
             }

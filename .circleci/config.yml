@@ -1,0 +1,54 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.1
+  node: circleci/node@5.2
+
+jobs:
+  python-tests:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - run:
+          name: Install Python dependencies
+          command: |
+            cd python-backend
+            pip install -r requirements.txt
+      - run:
+          name: Run pytest with coverage
+          command: |
+            cd python-backend
+            pytest
+      - store_artifacts:
+          path: python-backend/coverage.xml
+          destination: python-coverage
+      - store_artifacts:
+          path: python-backend/htmlcov
+          destination: python-htmlcov
+
+  javascript-tests:
+    docker:
+      - image: cimg/node:20.0
+    steps:
+      - checkout
+      - run:
+          name: Install JavaScript dependencies
+          command: |
+            cd js-backend
+            npm ci
+      - run:
+          name: Run Jest with coverage
+          command: |
+            cd js-backend
+            npm test
+      - store_artifacts:
+          path: js-backend/coverage
+          destination: js-coverage
+
+workflows:
+  version: 2
+  test-suite:
+    jobs:
+      - python-tests
+      - javascript-tests
